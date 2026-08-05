@@ -1,0 +1,41 @@
+params stand_width=75, wall_thk=8, cable_hole_r=10
+
+
+    // 1. Main BackRest: Extended down to y = -40 to meet the desk plane (Z = 0)
+    part name=BackRest
+        .rx = 120
+        .translate = ((0, 0, 35))
+
+        sketch name=BackRestSketch
+            rect mode=2p p1=(-37.5, -40) p2=(37.5, 110) filletradius=4
+            circle mode=cr c=(0, -20) r=$cable_hole_r
+        endsketch
+
+        extrude profile=#BackRestSketch distance=$wall_thk mode=add
+    endpart
+
+    // 2. Front Shelf: Forward segment of the cross-member (y from 0 to 30)
+    part name=FrontShelf
+        .rx = 30
+        .translate = ((0, 0, 35))
+
+        sketch name=FrontShelfSketch
+            rect mode=2p p1=(-37.5, 0) p2=(37.5, 30) filletradius=4
+            circle mode=cr c=(0, 15) r=$cable_hole_r
+        endsketch
+
+        extrude profile=#FrontShelfSketch distance=$wall_thk mode=add
+    endpart
+
+    // 3. Rear Leg: Rearward segment of the cross-member on the SAME plane (y from -70 to 0)
+    part name=RearLeg
+        .rx = 30
+        .translate = ((0, 0, 35))
+
+        sketch name=RearLegSketch
+            rect mode=2p p1=(-37.5, -70) p2=(37.5, 0) filletradius=4
+        endsketch
+
+        extrude profile=#RearLegSketch distance=$wall_thk mode=add
+    endpart
+

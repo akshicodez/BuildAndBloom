@@ -1,0 +1,137 @@
+params wire_r=1.5
+params r0=40, z0=0
+params r1=85, z1=45
+params r2=75, z2=95
+params r3=50, z3=135
+
+params cos30=@CosDeg(30)
+params sin30=@SinDeg(30)
+
+
+    // Central Candle Dish (Resting flush at Z=0)
+    part name=CandleDish
+        .translate = ((0, 0, 0))
+
+        sketch name=DishBase
+            circle mode=cr centre=(0,0) radius=35
+        endsketch
+
+        extrude profile=#DishBase distance=2 mode=add
+
+        sketch name=DishWall
+            circle mode=cr centre=(0,0) radius=37
+            circle mode=cr centre=(0,0) radius=35
+        endsketch
+
+        extrude profile=#DishWall distance=15 mode=add
+    endpart
+
+    // Dish Radial Support Spokes
+    part name=DishSupportSpoke qty=6 newdef=true
+        .ry = 90
+        .translate = ((35, 0, 1.5))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=5 radius=$wire_r
+    endpart
+
+    // Tier 0 (Base Level Hexagon Chords)
+    part name=Ring0Chord qty=6 newdef=true
+        .ry = 90
+        .rz = 120
+        .translate = (($r0, 0, $z0))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=$r0 radius=$wire_r
+    endpart
+
+    // Tier 0-1 Diagonal Up Struts (A)
+    part name=Tier01StrutA qty=6 newdef=true
+        .ry = 50.28
+        .rz = 51.64
+        .translate = (($r0, 0, $z0))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=70.43 radius=$wire_r
+    endpart
+
+    // Tier 0-1 Diagonal Up Struts (B)
+    part name=Tier01StrutB qty=6 newdef=true
+        .ry = 50.28
+        .rz = -51.64
+        .translate = (($r0, 0, $z0))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=70.43 radius=$wire_r
+    endpart
+
+    // Tier 1 (Lower Mid Level Hexagon Chords)
+    part name=Ring1Chord qty=6 newdef=true
+        .ry = 90
+        .rz = 150
+        .translate = ((@($r1 * $cos30), @($r1 * $sin30), $z1))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=$r1 radius=$wire_r
+    endpart
+
+    // Tier 1-2 Diagonal Up Struts (A)
+    part name=Tier12StrutA qty=6 newdef=true
+        .ry = 40.37
+        .rz = -88.13
+        .translate = ((@($r1 * $cos30), @($r1 * $sin30), $z1))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=65.64 radius=$wire_r
+    endpart
+
+    // Tier 1-2 Diagonal Up Struts (B)
+    part name=Tier12StrutB qty=6 newdef=true
+        .ry = 40.37
+        .rz = 148.13
+        .translate = ((@($r1 * $cos30), @($r1 * $sin30), $z1))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=65.64 radius=$wire_r
+    endpart
+
+    // Tier 2 (Upper Mid Level Hexagon Chords)
+    part name=Ring2Chord qty=6 newdef=true
+        .ry = 90
+        .rz = 120
+        .translate = (($r2, 0, $z2))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=$r2 radius=$wire_r
+    endpart
+
+    // Tier 2-3 Diagonal Up Struts (A)
+    part name=Tier23StrutA qty=6 newdef=true
+        .ry = 45.26
+        .rz = 141.76
+        .translate = (($r2, 0, $z2))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=56.83 radius=$wire_r
+    endpart
+
+    // Tier 2-3 Diagonal Up Struts (B)
+    part name=Tier23StrutB qty=6 newdef=true
+        .ry = 45.26
+        .rz = -141.76
+        .translate = (($r2, 0, $z2))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=56.83 radius=$wire_r
+    endpart
+
+    // Tier 3 (Top Rim Level Hexagon Chords)
+    part name=Ring3Chord qty=6 newdef=true
+        .ry = 90
+        .rz = 150
+        .translate = ((@($r3 * $cos30), @($r3 * $sin30), $z3))
+        .rz = @(($index - 1) * 60)
+
+        cylinder height=$r3 radius=$wire_r
+    endpart
+

@@ -1,0 +1,171 @@
+// =================================================================
+// Parametric Wooden Cutlery Stand (Caddy) in FormulaCAD (FCL)
+// =================================================================
+
+
+    // -------------------------------------------------------------
+    // Parametric Dimensions (in mm)
+    // -------------------------------------------------------------
+    params box_len=200, box_wid=150, box_ht=90, thk=10, base_thk=10
+    params dip=25, divider_y=60, div_ht=60
+    params leg_wid=25, leg_thk=10, handle_ht=190, handle_rad=10
+
+    // Derived Parameters
+    params wall_len=@($box_len - 2 * $thk)
+    params R=@((($wall_len / 2) * ($wall_len / 2) + $dip * $dip) / (2 * $dip))
+
+    // -------------------------------------------------------------
+    // 1. Base Plate
+    // -------------------------------------------------------------
+    part name=BasePlate
+        .translate = ((0, 0, 0))
+
+        sketch name=base_sk
+            rect mode=2p p1=(0, 0) p2=($box_len, $box_wid)
+        endsketch
+
+        extrude profile=#base_sk distance=$base_thk mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 2. Left Side Wall (Full Outer Depth)
+    // -------------------------------------------------------------
+    part name=LeftSideWall
+        .rx = 90
+        .rz = 90
+        .translate = ((0, 0, $base_thk))
+
+        sketch name=left_sk
+            rect mode=2p p1=(0, 0) p2=($box_wid, $box_ht)
+        endsketch
+
+        extrude profile=#left_sk distance=$thk mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 3. Right Side Wall (Full Outer Depth)
+    // -------------------------------------------------------------
+    part name=RightSideWall
+        .rx = 90
+        .rz = 90
+        .translate = ((@($box_len - $thk), 0, $base_thk))
+
+        sketch name=right_sk
+            rect mode=2p p1=(0, 0) p2=($box_wid, $box_ht)
+        endsketch
+
+        extrude profile=#right_sk distance=$thk mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 4. Front Wall (Curved Top Dip)
+    // -------------------------------------------------------------
+    part name=FrontWall
+        .rx = 90
+        .translate = (($thk, $thk, $base_thk))
+
+        sketch name=front_sk
+            rect mode=2p p1=(0, 0) p2=($wall_len, $box_ht)
+        endsketch
+
+        extrude profile=#front_sk distance=$thk mode=add
+
+        sketch name=front_cut_sk
+            circle mode=cr c=(@($wall_len / 2), @($box_ht + $R - $dip)) r=$R
+        endsketch
+
+        extrude profile=#front_cut_sk distance=$thk mode=cut
+    endpart
+
+    // -------------------------------------------------------------
+    // 5. Back Wall (Curved Top Dip)
+    // -------------------------------------------------------------
+    part name=BackWall
+        .rx = 90
+        .translate = (($thk, $box_wid, $base_thk))
+
+        sketch name=back_sk
+            rect mode=2p p1=(0, 0) p2=($wall_len, $box_ht)
+        endsketch
+
+        extrude profile=#back_sk distance=$thk mode=add
+
+        sketch name=back_cut_sk
+            circle mode=cr c=(@($wall_len / 2), @($box_ht + $R - $dip)) r=$R
+        endsketch
+
+        extrude profile=#back_cut_sk distance=$thk mode=cut
+    endpart
+
+    // -------------------------------------------------------------
+    // 6. Middle Divider Panel (Curved Top Dip)
+    // -------------------------------------------------------------
+    part name=MiddleDivider
+        .rx = 90
+        .translate = (($thk, @($divider_y + $thk), $base_thk))
+
+        sketch name=mid_sk
+            rect mode=2p p1=(0, 0) p2=($wall_len, $box_ht)
+        endsketch
+
+        extrude profile=#mid_sk distance=$thk mode=add
+
+        sketch name=mid_cut_sk
+            circle mode=cr c=(@($wall_len / 2), @($box_ht + $R - $dip)) r=$R
+        endsketch
+
+        extrude profile=#mid_cut_sk distance=$thk mode=cut
+    endpart
+
+    // -------------------------------------------------------------
+    // 7. Front Compartment Transverse Dividers (qty=2)
+    // -------------------------------------------------------------
+    part name=FrontDivider qty=2 newdef=true
+        .rx = 90
+        .rz = 90
+        .translate = ((@($thk + $index * ($wall_len / 3) - $thk / 2), $thk, $base_thk))
+
+        sketch name=fdiv_sk
+            rect mode=2p p1=(0, 0) p2=(@($divider_y - $thk), $div_ht)
+        endsketch
+
+        extrude profile=#fdiv_sk distance=$thk mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 8. Fixed Handle Assembly
+    // -------------------------------------------------------------
+    // 8a. Left Upright Arm
+    part name=HandleLegLeft
+        .rx = 90
+        .rz = 90
+        .translate = ((@(- $leg_thk), @(($box_wid - $leg_wid) / 2), 0))
+
+        sketch name=leg_l_sk
+            rect mode=2p p1=(0, 0) p2=($leg_wid, $handle_ht)
+        endsketch
+
+        extrude profile=#leg_l_sk distance=$leg_thk mode=add
+    endpart
+
+    // 8b. Right Upright Arm
+    part name=HandleLegRight
+        .rx = 90
+        .rz = 90
+        .translate = (($box_len, @(($box_wid - $leg_wid) / 2), 0))
+
+        sketch name=leg_r_sk
+            rect mode=2p p1=(0, 0) p2=($leg_wid, $handle_ht)
+        endsketch
+
+        extrude profile=#leg_r_sk distance=$leg_thk mode=add
+    endpart
+
+    // 8c. Top Wooden Dowel Handle
+    part name=HandleDowel
+        .ry = 90
+        .translate = ((@(- $leg_thk), @($box_wid / 2), @($handle_ht - $leg_wid / 2)))
+
+        cylinder height=@($box_len + 2 * $leg_thk) radius=$handle_rad
+    endpart
+

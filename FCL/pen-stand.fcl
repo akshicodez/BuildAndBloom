@@ -1,0 +1,136 @@
+// =================================================================
+// PARAMETRIC CONFIGURATION FOR 3-COLUMN FLAT-TO-FLAT TRIAD
+// =================================================================
+params R_out=32            // Outer radius of each hexagonal cup
+params wall_thk=3          // Wall thickness of the cups
+params base_h=12           // Thick premium base plate
+
+// Derived geometric parameters for flat-to-flat touching packing
+params R_in=@($R_out - $wall_thk)
+params D=@(2 * $R_out * 0.866025)   // Center-to-center distance between cups
+params R_tri=@($D / 1.73205)        // Distance from assembly center to cup centers
+
+// Individual cup center offsets
+params tall_y=$R_tri
+params med_x=@(-0.5 * $D)
+params med_y=@(-0.5 * $R_tri)
+params short_x=@(0.5 * $D)
+params short_y=@(-0.5 * $R_tri)
+
+// Base plate boundary radius
+params R_base=@($R_tri + $R_out + 6)
+
+// =================================================================
+// ASSEMBLY ENVIRONMENT
+// =================================================================
+assembly name=TriadPenStandNonInterfering
+
+    // -------------------------------------------------------------
+    // 1. PREMIUM THICK HEXAGONAL BASE
+    // -------------------------------------------------------------
+    part name=ThickBasePlate
+        sketch name=BaseProfile
+            polygon pointlist=[
+                ($R_base, 0),
+                ($R_base * 0.5, $R_base * 0.866025),
+                (-$R_base * 0.5, $R_base * 0.866025),
+                (-$R_base, 0),
+                (-$R_base * 0.5, -$R_base * 0.866025),
+                ($R_base * 0.5, -$R_base * 0.866025)
+            ]
+        endsketch
+        
+        extrude profile=#BaseProfile distance=$base_h mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 2. TALL BACK COLUMN (120mm) - Rotated 30° for Flat-to-Flat Contact
+    // -------------------------------------------------------------
+    part name=TallBackCup
+        .translate = @vector(0, $tall_y, $base_h)
+
+        sketch name=TallProfile
+            // Outer Hexagon (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_out * 0.866025, $R_out * 0.5),
+                (0, $R_out),
+                (-$R_out * 0.866025, $R_out * 0.5),
+                (-$R_out * 0.866025, -$R_out * 0.5),
+                (0, -$R_out),
+                ($R_out * 0.866025, -$R_out * 0.5)
+            ]
+            // Inner Pocket (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_in * 0.866025, $R_in * 0.5),
+                (0, $R_in),
+                (-$R_in * 0.866025, $R_in * 0.5),
+                (-$R_in * 0.866025, -$R_in * 0.5),
+                (0, -$R_in),
+                ($R_in * 0.866025, -$R_in * 0.5)
+            ]
+        endsketch
+        
+        extrude profile=#TallProfile distance=120 mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 3. MEDIUM FRONT-LEFT COLUMN (85mm) - Rotated 30° for Flat-to-Flat Contact
+    // -------------------------------------------------------------
+    part name=MediumLeftCup
+        .translate = @vector($med_x, $med_y, $base_h)
+
+        sketch name=MediumProfile
+            // Outer Hexagon (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_out * 0.866025, $R_out * 0.5),
+                (0, $R_out),
+                (-$R_out * 0.866025, $R_out * 0.5),
+                (-$R_out * 0.866025, -$R_out * 0.5),
+                (0, -$R_out),
+                ($R_out * 0.866025, -$R_out * 0.5)
+            ]
+            // Inner Pocket (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_in * 0.866025, $R_in * 0.5),
+                (0, $R_in),
+                (-$R_in * 0.866025, $R_in * 0.5),
+                (-$R_in * 0.866025, -$R_in * 0.5),
+                (0, -$R_in),
+                ($R_in * 0.866025, -$R_in * 0.5)
+            ]
+        endsketch
+        
+        extrude profile=#MediumProfile distance=85 mode=add
+    endpart
+
+    // -------------------------------------------------------------
+    // 4. SHORT FRONT-RIGHT COLUMN (55mm) - Rotated 30° for Flat-to-Flat Contact
+    // -------------------------------------------------------------
+    part name=ShortRightCup
+        .translate = @vector($short_x, $short_y, $base_h)
+
+        sketch name=ShortProfile
+            // Outer Hexagon (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_out * 0.866025, $R_out * 0.5),
+                (0, $R_out),
+                (-$R_out * 0.866025, $R_out * 0.5),
+                (-$R_out * 0.866025, -$R_out * 0.5),
+                (0, -$R_out),
+                ($R_out * 0.866025, -$R_out * 0.5)
+            ]
+            // Inner Pocket (Rotated 30 degrees)
+            polygon pointlist=[
+                ($R_in * 0.866025, $R_in * 0.5),
+                (0, $R_in),
+                (-$R_in * 0.866025, $R_in * 0.5),
+                (-$R_in * 0.866025, -$R_in * 0.5),
+                (0, -$R_in),
+                ($R_in * 0.866025, -$R_in * 0.5)
+            ]
+        endsketch
+        
+        extrude profile=#ShortProfile distance=55 mode=add
+    endpart
+
+endassembly
