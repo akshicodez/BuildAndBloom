@@ -1,42 +1,53 @@
 {
-  "title": "FCL Samples",
-  "description": "Gallery and resolver index for FCL sample models.",
+  "title": "Build and Bloom",
+  "description": "A collection of parametric product and decor models built with FormulaCAD.",
+
+  "owner": {
+    "name": "akshicodez",
+    "bio": "Exploring parametric product design and creative modelling with FormulaCAD."
+  },
+
   "items": {
+
     "candle-holder": {
       "name": "Geometric Wireframe Candle Holder",
       "description": "A multi-tiered geometric wireframe lantern with a central resting candle dish.",
       "markdown": "Constructed from layered hexagonal wire chords and diagonal lattice struts across four Z-levels (Z0 through Z3)[cite: 1]. Utilizes polar trigonometric functions (`@CosDeg`, `@SinDeg`) and index-driven rotational stepping (`$index`) to build a symmetrical wireframe structure.",
-      "file": "fcl/Candle-Holder.fcl",
-      "image": "images/candle-holder.jpg",
+      "file": "FCL/candle-holder.fcl",
+      "image": "Images/candle-holder.jpg",
       "tags": [ "wireframe", "decor", "parametric", "lattice", "intermediate", "gemini" ],
       "features": [ "params", "part", "qty", "newdef", "$index", "cylinder", "extrude", "sketch", "@CosDeg", "@SinDeg", "translate", "ry", "rz" ]
     },
+
     "cutlery-basket": {
       "name": "Parametric Cutlery Caddy",
       "description": "A wooden cutlery organizer featuring curved top profiles, internal compartment dividers, and an integrated dowel handle.",
       "markdown": "Demonstrates subtractive circular profile extrusions to generate smooth top dips across outer walls and central dividers[cite: 2]. Integrates indexed array placement (`qty=2`, `$index`) for front dividers and combines solid side arms with a top cylindrical dowel handle.",
-      "file": "fcl/Cutlery-Basket.fcl",
-      "image": "images/cutlery-basket.jpg",
+      "file": "FCL/cutlery-basket.fcl",
+      "image": "Images/cutlery-basket.jpg",
       "tags": [ "woodworking", "organizer", "caddy", "parametric", "intermediate", "gemini" ],
       "features": [ "params", "part", "sketch", "rect", "circle", "extrude", "cylinder", "qty", "newdef", "$index", "rx", "rz", "translate" ]
     },
+
     "pen-stand": {
       "name": "Triad Hexagonal Pen Stand",
       "description": "A 3-column desk organizer with flat-to-flat touching hexagonal cups on a thick base plate.",
       "markdown": "Calculates exact center-to-center packing distances (`R_tri`, `D`) for non-interfering flat-to-flat hexagonal contact[cite: 3]. Features 30° rotated outer/inner hexagon sketch profiles extruded to varied column heights (120mm, 85mm, 55mm).",
-      "file": "fcl/Pen-Stand.fcl",
-      "image": "images/pen-stand.png",
+      "file": "FCL/pen-stand.fcl",
+      "image": "Images/pen-stand.png",
       "tags": [ "assembly", "organizer", "desk", "hexagon", "parametric", "beginner", "gemini" ],
       "features": [ "assembly", "part", "params", "polygon", "extrude", "@vector", "translate" ]
     },
+
     "phone-stand": {
       "name": "Desktop Phone Stand",
       "description": "An angled desktop smartphone stand with filleted corners and integrated cable clearance holes.",
       "markdown": "Constructs an angled phone support consisting of a main backrest, front shelf, and rear leg. Uses sketch fillet radii (`filletradius`), cable clearance cutouts, and angular X-axis rotations (`.rx`) to position support members flush to the desk plane.",
-      "file": "fcl/Phone-Stand.fcl",
-      "image": "images/phone-stand.jpg",
+      "file": "FCL/phone-stand.fcl",
+      "image": "Images/phone-stand.jpg",
       "tags": [ "desk", "accessory", "phone-stand", "fillet", "beginner", "gemini" ],
       "features": [ "params", "part", "sketch", "rect", "circle", "extrude", "rx", "translate", "filletradius" ]
     }
+
   }
 }
